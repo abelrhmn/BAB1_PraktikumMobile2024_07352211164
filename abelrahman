@@ -1,0 +1,27 @@
+class Pegawai {
+  String nama;
+  String jabatan;
+
+  Pegawai(this.nama, this.jabatan);
+
+  void tampilkanInfo(int usia, String alamat, String nomorTelepon) {
+    print('Nama: $nama');
+    print('Jabatan: $jabatan');
+    print('Usia: $usia');
+    print('Alamat: $alamat');
+    print('Nomor Telepon: $nomorTelepon');
+  }
+
+  void berikanBonus(double nilaiKinerja, double bonusTetap, String alasan) {
+    double totalBonus = nilaiKinerja + bonusTetap;
+    print('Pegawai: $nama');
+    print('Total Bonus: \$${totalBonus}');
+    print('Alasan: $alasan');
+  }
+}
+
+void main() {
+  Pegawai pegawai1 = Pegawai('Ahmad', 'Developer');
+  pegawai1.tampilkanInfo(30, 'Jakarta', '08123456789');
+  pegawai1.berikanBonus(500, 100, 'Kinerja sangat baik');
+}
