@@ -1,0 +1,65 @@
+Code program:
+import 'dart:async';
+enum Role { Admin, Customer }
+class User {
+  String name;
+  int age;
+  late List<Product> products; 
+  Role? role; 
+
+  User(this.name, this.age) {
+    products = []; // initialize products
+  }
+}
+class Product {
+  String productName;
+  double price;
+  bool inStock;
+  Product(this.productName, this.price, this.inStock);
+}
+class AdminUser  extends User {
+  AdminUser (String name, int age) : super(name, age);
+  void addProduct(Product product) {
+    if (product.inStock) {
+      this.products.add(product);
+      print('Product ${product.productName} has been added successfully.');
+    } else {
+      throw Exception('Product ${product.productName} is not available in stock.');
+    }
+  }
+  void removeProduct(String productName) {
+    products.removeWhere((product) => product.productName == productName);
+    print('Product $productName has been removed successfully.');
+  }
+}
+class CustomerUser  extends User {
+  CustomerUser (String name, int age) : super(name, age);
+  void viewProducts() {
+    if (products.isEmpty) {
+      print('No products are available.');
+    } else {
+      print('Product list:');
+      for (var product in this.products) {
+        print('${product.productName} - Price: ${product.price} - In Stock: ${product.inStock}');
+      }
+    }
+  }
+}
+Future<Product> fetchProductDetails(String productName) async {
+  await Future.delayed(Duration(seconds: 2));
+  return Product(productName, 100.0, true); // Return dummy product
+}
+void main() async {
+  AdminUser  admin = AdminUser ('Alice', 30);
+  CustomerUser  customer = CustomerUser ('Bob', 25);
+  try {
+    Product newProduct = await fetchProductDetails('Laptop');
+    admin.addProduct(newProduct);
+  } catch (e) {
+    print('Error: $e');
+  }
+  customer.products = admin.products; 
+  customer.viewProducts();
+  admin.removeProduct('Laptop');
+  customer.viewProducts();
+}
